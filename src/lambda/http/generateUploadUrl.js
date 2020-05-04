@@ -1,15 +1,62 @@
 'use strict'
 
+const AWS = require('aws-sdk');
+const { v4: uuidv4 } = require('uuid');
+
+const connectToDatabase = require('../../db/mongose')
+const { Animal } = require('../../models/animal')
+
+const bucketName = process.env.IMAGES_S3_BUCKET
+const urlExpiration = process.env.SIGNED_URL_EXPIRATION
+
+const s3 = new AWS.S3({
+  signatureVersion: 'v4'
+})
+
 exports.handler = async event => {
-    console.log('Processing Event: ', event)
+  console.log('Processing Event: ', event)
+  const animalId = event.pathParameters.animalId
+  console.log('expiration variable', urlExpiration)
+
+  await connectToDatabase()
+
+  // Check if animal with the given id exist
+  const validAnimalId = await Animal.findById(animalId)
+
+  if (!validAnimalId) {
+    return {
+      statusCode: 404,
+      headers: {
+        'Access-Control-Allow-Origin': '*'
+      },
+      body: JSON.stringify({
+        error: 'Animal does not exist'
+      })
+    }
+  }
+
+  const imageId = uuidv4();
+  const url = getUploadUrl(imageId)
+
+  const imageUrl = `https://${bucketName}.s3.amazonaws.com/${imageId}`
+
+  await Animal.findByIdAndUpdate(animalId, { imageUrl: imageUrl })
 
   return {
-    statusCode: 200,
-    body: JSON.stringify(
-      {
-        message: 'Go Serverless v1.0! Your function executed successfully!',
-        input: event
-      },
-    )
+    statusCode: 201,
+    headers: {
+      'Access-Control-Allow-Origin': '*'
+    },
+    body: JSON.stringify({
+      uploadUrl: url
+    })
   }
+}
+
+function getUploadUrl(imageId) {
+  return s3.getSignedUrl('putObject', {
+    Bucket: bucketName,
+    Key: imageId,
+    Expires: Number(urlExpiration)
+  })
 }
