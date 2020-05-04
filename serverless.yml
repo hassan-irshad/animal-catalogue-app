@@ -1,0 +1,44 @@
+service: animal-catalogue
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+
+  stage: ${opt:stage, 'dev'}
+  region: ${opt:region, 'us-east-1'}
+
+
+
+functions:
+  GetAnimals:
+    handler: src/lambda/http/getAnimals.handler
+    events:
+      - http:
+          method: get
+          path: animals
+          cors: true
+    
+  CreateAnimal:
+    handler: src/lambda/http/createAnimal.handler
+    events:
+      - http:
+          method: post
+          path: animals
+          cors: true
+
+  DeleteAnimal:
+    handler: src/lambda/http/deleteAnimal.handler
+    events:
+      - http:
+          method: delete
+          path: animals/{animalId}
+          cors: true
+
+  GenerateUploadUrl:
+    handler: src/lambda/http/generateUploadUrl.handler
+    events:
+      - http:
+          method: post
+          path: animals/{animalId}/attachment
+          cors: true
+
