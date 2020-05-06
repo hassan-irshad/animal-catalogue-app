@@ -1,12 +1,11 @@
 <template>
   <div class="home">
-    <Card v-for="item in animals" :key="item._id" :item="item"/>
+    <Card v-for="item in animals" :key="item._id" :item="item" @clicked="onClickDelete"/>
   </div>
 </template>
 
 <script>
 import Card from '@/components/Card.vue'
-// const axios = require('axios').default
 import { getAnimals } from '../api/animals-api'
 
 export default {
@@ -21,7 +20,11 @@ export default {
   },
   async mounted () {
     this.animals = await getAnimals()
-    console.log('inside home', this.animals)
+  },
+  methods: {
+    async onClickDelete (value) {
+      this.animals = await getAnimals()
+    }
   }
 }
 </script>

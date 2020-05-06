@@ -5,7 +5,7 @@
     :style="{marginTop: marginTop}"
   >
     <v-img
-      src="https://cdn.vuetifyjs.com/images/cards/sunshine.jpg"
+      :src="item.imageUrl"
       height="200px"
     ></v-img>
 
@@ -17,17 +17,39 @@
       {{item.description}}
     </v-card-subtitle>
 
+    <v-card-actions>
+      <v-btn
+        :loading="loading"
+        color="orange"
+        text
+        @click="removeAnimal"
+      >
+        Delete
+      </v-btn>
+
+    </v-card-actions>
+
   </v-card>
 </template>
 
 <script>
+import { deleteAnimal } from '../api/animals-api'
+
 export default {
   name: 'Card',
   props: ['item'],
 
   data: () => ({
     marginTop: '10px',
-    title: 'Hassan'
-  })
+    loading: false
+  }),
+  methods: {
+    async removeAnimal (event) {
+      this.loading = true
+      await deleteAnimal(this.item._id)
+      this.loading = false
+      this.$emit('clicked', 'deleted')
+    }
+  }
 }
 </script>

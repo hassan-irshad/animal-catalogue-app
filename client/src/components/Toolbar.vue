@@ -6,34 +6,24 @@
     >
     <v-toolbar-title>Animal Catalogue</v-toolbar-title>
     <v-spacer></v-spacer>
-    <v-btn dark color="#5200c6">
+    <v-btn dark color="#5200c6" @click="navigate">
       <v-icon dark>mdi-plus</v-icon>
       Add New Animal
     </v-btn>
-    <!-- <FormModal :dialog="dialog"/> -->
     </v-app-bar>
 </template>
 
 <script>
 
-// import FormModal from './FormModal'
+import router from '../router/index'
 
 export default {
-  name: 'Toolbar'
+  name: 'Toolbar',
 
-  // components: {
-  //   FormModal
-  // },
-
-  // data: () => ({
-  //   dialog: false
-  // }),
-
-  // methods: {
-  //   dialogSwitch: function () {
-  //     console.log('d', this.dialog)
-  //     this.dialog = true
-  //   }
-  // }
+  methods: {
+    navigate () {
+      router.push({ name: 'CreateAnimal' })
+    }
+  }
 }
 </script>

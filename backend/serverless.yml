@@ -7,6 +7,13 @@ provider:
     IMAGES_S3_BUCKET: animal-catalogue-images-${self:provider.stage}
     SIGNED_URL_EXPIRATION: 300
 
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - s3:PutObject
+        - s3:GetObject
+      Resource: arn:aws:s3:::${self:provider.environment.IMAGES_S3_BUCKET}/*
+
   stage: ${opt:stage, 'dev'}
   region: ${opt:region, 'us-east-1'}
 
@@ -44,13 +51,6 @@ functions:
           method: post
           path: animals/{animalId}/attachment
           cors: true
-    iamRoleStatementsName: ${self:service.name}-generateUploadUrl-role-${self:provider.stage}
-    iamRoleStatements:
-    - Effect: Allow
-      Action:
-        - s3:PutObject
-        - s3:GetObject
-      Resource: arn:aws:s3:::${self:provider.environment.IMAGES_S3_BUCKET}/*
 
 resources:
   Resources:
