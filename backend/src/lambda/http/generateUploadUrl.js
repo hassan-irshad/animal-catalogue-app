@@ -20,6 +20,19 @@ exports.handler = async event => {
   const jwtToken = event.headers.Authorization.split(' ')[1]
   const userId = parseUserId(jwtToken)
 
+  if (!animalId) {
+    logger.info('Provide animal id')
+    return {
+      statusCode: 400,
+      headers: {
+        'Access-Control-Allow-Origin': '*'
+      },
+      body: JSON.stringify({
+        error: 'Provide animalId.'
+      })
+    }
+  }
+
   await connectToDatabase()
 
   // Check if animal with the given id exist

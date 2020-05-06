@@ -23,8 +23,6 @@ export function login () {
 export function handleAuthentication () {
   auth0client.parseHash((err, authResult) => {
     if (authResult && authResult.accessToken && authResult.idToken) {
-      console.log('Access token: ', authResult.accessToken)
-      console.log('id token: ', authResult.idToken)
       setSession(authResult)
     } else if (err) {
       console.log(err)
@@ -64,4 +62,21 @@ export function isAuthenticated () {
   // access token's expiry time
   const expiresAt = expires
   return new Date().getTime() < expiresAt
+}
+
+export function logout () {
+  // Remove tokens and expiry time
+  accessToken = null
+  idToken = null
+  expires = 0
+
+  // Remove isLoggedIn flag from localStorage
+  localStorage.removeItem('isLoggedIn')
+
+  auth0client.logout({
+    return_to: window.location.origin
+  })
+
+  // navigate to the home route
+  router.push({ name: 'Login' })
 }

@@ -43,6 +43,7 @@
 <script>
 import { createAnimal, getUploadUrl, uploadFile } from '../api/animals-api'
 import router from '../router/index'
+
 export default {
   name: 'CreateAnimal',
 
@@ -60,14 +61,18 @@ export default {
     async submit () {
       try {
         this.loading = true
+
         this.status = 'Creating'
         const result = await createAnimal({ name: this.name, description: this.description })
+
         this.status = 'Getting upload url'
         const uploadUrl = await getUploadUrl(result._id)
+
         this.status = 'Uploading'
         await uploadFile(uploadUrl, this.image)
         this.status = null
         this.loading = false
+
         router.push({ name: 'Home' })
       } catch (e) {
         this.status = null

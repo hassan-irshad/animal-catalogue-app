@@ -3,7 +3,6 @@ import router from '../router/index'
 
 export const authGuard = (to, from, next) => {
   // If the user is authenticated, continue with the route
-  console.log('authservice', isAuthenticated())
   if (isAuthenticated()) {
     return next()
   }

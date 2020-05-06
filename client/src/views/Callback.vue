@@ -5,10 +5,10 @@
 </template>
 <script>
 import { handleAuthentication } from '../auth/index'
+
 export default {
   name: 'Callback',
   mounted () {
-    console.log('callback')
     handleAuthentication()
   }
 }

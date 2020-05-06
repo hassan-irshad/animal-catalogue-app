@@ -11,6 +11,19 @@ exports.handler = async event => {
   const jwtToken = event.headers.Authorization.split(' ')[1]
   const userId = parseUserId(jwtToken)
 
+  if (!animalId) {
+    logger.info('Provide animal id')
+    return {
+      statusCode: 400,
+      headers: {
+        'Access-Control-Allow-Origin': '*'
+      },
+      body: JSON.stringify({
+        error: 'Provide animalId.'
+      })
+    }
+  }
+
   await connectToDatabase()
   const animal = await Animal.findOneAndDelete({
     _id: animalId,
@@ -28,7 +41,6 @@ exports.handler = async event => {
       })
     }
   }
-
 
   return {
     statusCode: 200,

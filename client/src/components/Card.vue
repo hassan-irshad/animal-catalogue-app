@@ -45,10 +45,14 @@ export default {
   }),
   methods: {
     async removeAnimal (event) {
-      this.loading = true
-      await deleteAnimal(this.item._id)
-      this.loading = false
-      this.$emit('clicked', 'deleted')
+      try {
+        this.loading = true
+        await deleteAnimal(this.item._id)
+        this.loading = false
+        this.$emit('clicked', 'deleted')
+      } catch (e) {
+        alert(e)
+      }
     }
   }
 }

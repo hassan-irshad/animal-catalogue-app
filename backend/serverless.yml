@@ -18,8 +18,6 @@ provider:
   stage: ${opt:stage, 'dev'}
   region: ${opt:region, 'us-east-1'}
 
-
-
 functions:
   Auth:
     handler: src/lambda/auth/auth0authorizer.handler
@@ -62,6 +60,7 @@ functions:
 
 resources:
   Resources:
+
     GatewayResponseDefault4XX:
       Type: 'AWS::ApiGateway::GatewayResponse'
       Properties:
@@ -105,3 +104,4 @@ resources:
               Action: 's3:GetObject'
               Resource: 'arn:aws:s3:::${self:provider.environment.IMAGES_S3_BUCKET}/*'
         Bucket: !Ref AttachmentsBucket
+

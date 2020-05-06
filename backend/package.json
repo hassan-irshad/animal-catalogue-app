@@ -1,0 +1,12 @@
+{
+  "name": "animal-catalogue",
+  "description": "",
+  "version": "0.1.0",
+  "dependencies": {
+    "aws-sdk": "^2.671.0",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.9.12",
+    "uuid": "^8.0.0"
+  },
+  "devDependencies": {}
+}

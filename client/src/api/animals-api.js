@@ -3,7 +3,6 @@ import Axios from 'axios'
 import { getIdToken } from '../auth/index'
 
 export async function getAnimals () {
-  console.log('Fetching animals')
   const idToken = getIdToken()
 
   const response = await Axios.get(`${apiEndpoint}/animals`, {
@@ -12,7 +11,6 @@ export async function getAnimals () {
       Authorization: `Bearer ${idToken}`
     }
   })
-  console.log('animals:', response.data)
   return response.data.animals
 }
 
