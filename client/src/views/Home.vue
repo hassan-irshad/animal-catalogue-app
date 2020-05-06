@@ -9,6 +9,7 @@
       <v-icon dark>mdi-plus</v-icon>
       Add New Animal
     </v-btn>
+    <h3 v-if="animals.length === 0">No animals! Add animals by clicking the above button.</h3>
     <Card v-for="item in animals" :key="item._id" :item="item" @clicked="fetchAnimals"/>
     </v-container>
   </div>

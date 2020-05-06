@@ -23,7 +23,8 @@ const routes = [
   {
     path: '/create-animal',
     name: 'CreateAnimal',
-    component: CreateAnimal
+    component: CreateAnimal,
+    beforeEnter: authGuard
   },
   {
     path: '/callback',
