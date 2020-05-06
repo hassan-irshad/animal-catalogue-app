@@ -12,7 +12,6 @@ exports.handler = async event => {
   const userId = parseUserId(jwtToken)
 
   if (!animalId) {
-    logger.info('Provide animal id')
     return {
       statusCode: 400,
       headers: {

@@ -14,6 +14,30 @@ exports.handler = async event => {
 
     const parsedBody = JSON.parse(event.body)
 
+    if (!parsedBody.name) {
+        return {
+          statusCode: 400,
+          headers: {
+            'Access-Control-Allow-Origin': '*'
+          },
+          body: JSON.stringify({
+            error: 'Provide name attribute.'
+          })
+        }
+    }
+
+    if (!parsedBody.desctiption) {
+        return {
+          statusCode: 400,
+          headers: {
+            'Access-Control-Allow-Origin': '*'
+          },
+          body: JSON.stringify({
+            error: 'Provide description attribute.'
+          })
+        }
+      }
+
     const animal = new Animal({
         _id: itemId,
         userId,
