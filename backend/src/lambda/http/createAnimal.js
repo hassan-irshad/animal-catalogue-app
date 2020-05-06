@@ -26,7 +26,7 @@ exports.handler = async event => {
         }
     }
 
-    if (!parsedBody.desctiption) {
+    if (!parsedBody.description) {
         return {
           statusCode: 400,
           headers: {
