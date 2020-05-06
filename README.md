@@ -8,3 +8,24 @@ This application will allow creating/removing/fetching animal catalogue items. E
 * The client consist of Vuejs framework
 * The application uses Auth0 HS256 algorithm to authenticate users and pass jwt token to interact with the backend
 * To upload images attachements, the application uses presigned url from s3 bucket and uploads the image through it to the s3 bucket
+
+# How to run the application
+
+## Backend
+
+To deploy an application run the following commands:
+
+```
+cd backend
+npm install
+sls deploy -v
+```
+
+## Frontend
+
+To run a client application:
+
+```
+cd client
+npm install
+npm run serve
