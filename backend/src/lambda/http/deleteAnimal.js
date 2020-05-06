@@ -2,15 +2,19 @@
 
 const connectToDatabase = require('../../db/mongose')
 const { Animal } = require('../../models/animal')
+const parseUserId = require('../../auth/utils')
 
 exports.handler = async event => {
   console.log('Processing Event: ', event)
 
   const animalId = event.pathParameters.animalId
+  const jwtToken = event.headers.Authorization.split(' ')[1]
+  const userId = parseUserId(jwtToken)
 
   await connectToDatabase()
   const animal = await Animal.findOneAndDelete({
-    _id: animalId
+    _id: animalId,
+    userId
   })
 
   if (!animal) {

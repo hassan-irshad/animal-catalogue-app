@@ -5,6 +5,7 @@ const { v4: uuidv4 } = require('uuid');
 
 const connectToDatabase = require('../../db/mongose')
 const { Animal } = require('../../models/animal')
+const parseUserId = require('../../auth/utils')
 
 const bucketName = process.env.IMAGES_S3_BUCKET
 const urlExpiration = process.env.SIGNED_URL_EXPIRATION
@@ -16,12 +17,13 @@ const s3 = new AWS.S3({
 exports.handler = async event => {
   console.log('Processing Event: ', event)
   const animalId = event.pathParameters.animalId
-  console.log('expiration variable', urlExpiration)
+  const jwtToken = event.headers.Authorization.split(' ')[1]
+  const userId = parseUserId(jwtToken)
 
   await connectToDatabase()
 
   // Check if animal with the given id exist
-  const validAnimalId = await Animal.findById(animalId)
+  const validAnimalId = await Animal.findOne({_id: animalId, userId})
 
   if (!validAnimalId) {
     return {
